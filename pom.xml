@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.airwallex.RPNCalculator</groupId>
-    <artifactId>rpn-RPNCalculator</artifactId>
+    <artifactId>rpn-calculator</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -22,6 +22,7 @@
 
     <properties>
         <jdk.version>1.8</jdk.version>
+        <docker.image.prefix>cooldokerrepo</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -60,7 +61,7 @@
     </dependencies>
 
     <build>
-        <finalName>RPNCalculator</finalName>
+        <finalName>rpn-calculator</finalName>
         <plugins>
             <!-- Set a JDK compiler level -->
             <plugin>
@@ -96,6 +97,20 @@
                     </execution>
                 </executions>
             </plugin>
+
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.3.6</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+
 
         </plugins>
 
