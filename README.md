@@ -15,4 +15,4 @@ To access , please send a POST request with raw data to https://cupdld3yo6.execu
 There is also a Dockerfile, when you run '<i>mvn install dockerfile:build</i>', it generates a docker image with name <b> spring/rpn-calculator <b>
 
 You can run the dockerfile using following command : <br>
-<b> docker run -p 9000:9000 -i -t spring/rpn-calculator:latest </b>
+<b> docker run -p 9000:9000 -i -t cooldokerrepo/rpn-calculator:latest </b>
