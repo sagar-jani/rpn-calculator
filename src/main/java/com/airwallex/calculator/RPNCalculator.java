@@ -48,6 +48,7 @@ public class RPNCalculator<T extends Number> implements Calculator<Double> {
         for (String input : inputList) {
             evaluateToken(input, (++pos * 2 - 1));
         }
+
     }
 
     /**
@@ -61,19 +62,28 @@ public class RPNCalculator<T extends Number> implements Calculator<Double> {
     private void evaluateToken(String token, int position) throws RPNCalculatorException {
 
         if (token.matches(decimalPattern)) {
-            Double decimalNumber = null;
-
-            try {
-                decimalNumber = Double.parseDouble(token);
-            } catch (NumberFormatException nfe) {
-                throw new RPNCalculatorException("An exception occurred while parsing the " + token + " to Double");
-            }
-
-            calculatorStack.push(decimalNumber);
-            lastInstructions.push(new LastInstruction(null, decimalNumber, null));
+            handleOperand(token);
         } else {
             handleOperator(calculatorStack, token, position);
         }
+    }
+
+    /**
+     * Handles the digits by pushing it to Stack for further processing.
+     * @param token
+     * @throws RPNCalculatorException
+     */
+    private void handleOperand(String token) throws RPNCalculatorException {
+        Double decimalNumber;
+
+        try {
+            decimalNumber = Double.parseDouble(token);
+        } catch (NumberFormatException nfe) {
+            throw new RPNCalculatorException("An exception occurred while parsing the " + token + " to Double");
+        }
+
+        calculatorStack.push(decimalNumber);
+        lastInstructions.push(new LastInstruction(null, decimalNumber, null));
     }
 
     /**
@@ -170,8 +180,6 @@ public class RPNCalculator<T extends Number> implements Calculator<Double> {
             return;
         }
 
-        System.out.println("lastInstruction : " + lastInstruction.getSecondOperand() + " " + lastInstruction.getFirstOperand()
-                + " " + lastInstruction.getOperator());
         if (lastInstruction.getSecondOperand() != null) {
             calculatorStack.push(lastInstruction.getSecondOperand());
         }

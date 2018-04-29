@@ -16,8 +16,9 @@ import java.util.Scanner;
 import java.util.Stack;
 
 /**
- * Main Class.
- * Created by sagarjani.
+ * SpringBootApplication Main class
+ *
+ * Created by sagarjani
  */
 
 @SpringBootApplication
@@ -63,8 +64,7 @@ public class RPNCalculatorApplication implements CommandLineRunner {
             try {
                 rpnCalculator.compute(inputList);
             } catch (RPNCalculatorException e) {
-                System.out.println(e.getMessage());
-                logger.error("An occurred while processing the requst :" + e.getMessage());
+                logger.error("An occurred while processing the request :" + e.getMessage());
             }
 
             Stack<Double> calculatorStack = rpnCalculator.getStack();

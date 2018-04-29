@@ -3,10 +3,11 @@ package com.airwallex.calculator.aws;
 import com.airwallex.calculator.Calculator;
 import com.airwallex.calculator.RPNCalculator;
 import com.airwallex.calculator.exception.RPNCalculatorException;
+import com.airwallex.calculator.utils.StackUtils;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
@@ -14,9 +15,9 @@ import java.util.Stack;
 /**
  * Request Handler for AWS Lambda, this class would receive a POST request generated through AWS API Gateway
  * and returns the result.
- *
+ * <p>
  * To pass the input please provide the expression as part of raw method body (no key) .
- *
+ * <p>
  * <p>
  * Below is a sample logs generated fpr lambda :
  * START RequestId: e9f0571e-4aad-11e8-9dea-4fc43429485f Version: $LATEST
@@ -27,12 +28,11 @@ import java.util.Stack;
  * CloudWatch log group name: /aws/lambda/RPNCalculator
  * Stack:END RequestId: e9f0571e-4aad-11e8-9dea-4fc43429485f
  * REPORT RequestId: e9f0571e-4aad-11e8-9dea-4fc43429485f	Duration: 58.82 ms	Billed Duration: 100 ms 	Memory Size: 512 MB	Max Memory Used: 34 MB
- *
+ * <p>
  * <p>
  * Created by sagarjani.
  */
 public class AWSRequestHandler implements RequestHandler<String, String> {
-
 
     @Override
     public String handleRequest(String input, Context context) {
@@ -58,25 +58,8 @@ public class AWSRequestHandler implements RequestHandler<String, String> {
         }
 
         Stack<Double> calculatorStack = rpnCalculator.getStack();
-        return printStack(calculatorStack);
+        return StackUtils.printStack(calculatorStack);
     }
 
-    /**
-     * Prints the calculator stack.
-     *
-     * @param calculatorStack
-     * @return
-     */
-    private static String printStack(Stack<Double> calculatorStack) {
-        DecimalFormat fmt = new DecimalFormat("0.##########");
-        System.out.print("Stack:");
-        StringBuffer sb = new StringBuffer();
 
-        calculatorStack.forEach((element) -> {
-            sb.append(fmt.format(element));
-            sb.append(" ");
-        });
-
-        return sb.toString();
-    }
 }
